@@ -31,7 +31,7 @@ async function request(path, options = {}) {
     const body = await res.json().catch(() => ({}))
     throw new Error(body.error || `Request failed (${res.status}).`)
   }
-  return res.json()
+  return res.status === 204 ? null : res.json()
 }
 
 export const getConfig = () => request('/api/config')
@@ -44,3 +44,8 @@ export const payMpesa = (id, phone) =>
   request(`/api/orders/${id}/mpesa`, { method: 'POST', body: JSON.stringify({ phone }) })
 export const getPaymentStatus = (id) => request(`/api/orders/${id}/payment-status`)
 export const sandboxConfirm = (id) => request(`/api/orders/${id}/sandbox-confirm`, { method: 'POST' })
+export const getCart = () => request('/api/cart')
+export const setCartItem = (productId, quantity) =>
+  request(`/api/cart/items/${productId}`, { method: 'PUT', body: JSON.stringify({ quantity }) })
+export const removeCartItem = (productId) => request(`/api/cart/items/${productId}`, { method: 'DELETE' })
+export const clearCart = () => request('/api/cart', { method: 'DELETE' })

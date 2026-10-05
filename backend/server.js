@@ -175,6 +175,8 @@ app.get('/api/orders/mine', handle(async (req, res) => {
 
 require('./mpesa')(app, supabase, handle)
 
+require('./cart')(app, supabase, handle)
+
 if (require.main === module) {
   const PORT = process.env.PORT || 5001
   app.listen(PORT, () => console.log(`Shop API running on http://localhost:${PORT}`))
